@@ -107,6 +107,7 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
         </div>
         <div className="col-span-1 flex justify-end items-end">
           <button
+            disabled={loading}
             className="ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
             onClick={() => onSearch(newSearchOptions)}
           >
