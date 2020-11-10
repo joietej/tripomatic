@@ -18,7 +18,6 @@ const Map = () => {
   const { data, isLoading, isError, setSize, size } = useHotelSearch(
     hotelSearchOptions
   );
-
   const [showPopup, setShowPopup] = React.useState(false);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
@@ -60,18 +59,15 @@ const Map = () => {
       >
         {isError ? (
           <pre>Error</pre>
-        ) : isLoading ? (
-          <div>loading...</div>
         ) : (
-          data.map((m) => (
-            <HotelMarker marker={m} onClick={onMarkerClick} />
-          ))
+          data.map((m) => <HotelMarker marker={m} onClick={onMarkerClick} />)
         )}
         {showPopup && (
           <HotelPopup marker={selectedMarker} onClose={togglePopup} />
         )}
 
         <Menu
+          loading={isLoading}
           searchOptions={hotelSearchOptions}
           onLoodMore={() => setSize(size + 1)}
           onSearch={(o) => setHotelSearchOptions(o)}
