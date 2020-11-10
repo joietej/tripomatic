@@ -29,10 +29,11 @@ const Menu = ({ searchOptions, onLoadMore, onSearch }) => {
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
 
   return (
-    <div className="rounded bg-gray-100 mx-4 my-4">
-      <div className="md:flex md:justify-between space-x-2">
-        <div className="space-x-2">
+    <div className="roundedlg bg-gray-200 mx-4 my-4">
+      <div className="md:flex md:justify-evenly">
+        <div className="flex flex-1 justify-start">
           <input
+            className="w-full"
             name="location"
             type="text"
             value={newSearchOptions.location || "Near Me"}
@@ -41,46 +42,61 @@ const Menu = ({ searchOptions, onLoadMore, onSearch }) => {
             }
           />
         </div>
-        <div className="space-x-2">
-          <label htmlFor="checkin">Checkin</label>
-          <input
-            name="checkin"
-            type="date"
-            value={newSearchOptions.checkin}
-            onChange={(e) =>
-              dispatch({ type: "checkin", value: e.target.value })
-            }
-          />
+        <div className="flex flex-1 justify-between">
+          <div className="w-1/2 md:flex">
+            <label htmlFor="checkin" className="w-full  md:text-center">
+              Checkin
+            </label>
+            <input
+              className="w-full"
+              name="checkin"
+              type="date"
+              value={newSearchOptions.checkin}
+              onChange={(e) =>
+                dispatch({ type: "checkin", value: e.target.value })
+              }
+            />
+          </div>
+          <div className="w-1/2 md:flex">
+            <label htmlFor="checkout" className="w-full  md:text-center">
+              Checkout
+            </label>
+            <input
+              className="w-full"
+              name="checkout"
+              type="date"
+              value={newSearchOptions.checkout}
+              onChange={(e) =>
+                dispatch({ type: "checkout", value: e.target.value })
+              }
+            />
+          </div>
         </div>
-        <div className="space-x-2">
-          <label htmlFor="checkout">Checkout</label>
-          <input
-            name="checkout"
-            type="date"
-            value={newSearchOptions.checkout}
-            onChange={(e) =>
-              dispatch({ type: "checkout", value: e.target.value })
-            }
-          />
-        </div>
-        <div className="space-x-2">
-          <label htmlFor="rooms">Rooms</label>
-          <input
-            name="rooms"
-            type="number"
-            min={1}
-            max={3}
-            value={newSearchOptions.rooms}
-            onChange={(e) => dispatch({ type: "rooms", value: e.target.value })}
-          />
-        </div>
-        <div className="space-x-2">
-          <button
-            className="rounded bg-blue-100 hover:bg-blue-200"
-            onClick={() => onSearch(newSearchOptions)}
-          >
-            Search
-          </button>
+        <div className="flex flex-1 justify-evenly">
+          <div className="w-1/2 md:flex">
+            <label htmlFor="rooms" className="w-full md:text-center">
+              Rooms
+            </label>
+            <input
+              className="text-right w-full"
+              name="rooms"
+              type="number"
+              min={1}
+              max={3}
+              value={newSearchOptions.rooms}
+              onChange={(e) =>
+                dispatch({ type: "rooms", value: e.target.value })
+              }
+            />
+          </div>
+          <div className="w-1/2 flex justify-end">
+            <button
+              className="rounded border bg-blue-400 hover:bg-blue-800 text-white"
+              onClick={() => onSearch(newSearchOptions)}
+            >
+              Search
+            </button>
+          </div>
         </div>
       </div>
     </div>
