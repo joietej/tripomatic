@@ -35,7 +35,7 @@ const Typeahead = ({ inputProps, options, onValueChange, onSelection }) => {
         <div style={{width:width}} className="my-2 px-4 py-4 absolute shadow border bg-gray-200 rounded-lg">
           <ul>
             {options.map((o) => (
-              <li key={o.id} onClick={() => onListItemClick(o)}>{o.name}</li>
+              <li key={o.id} onClick={() => onListItemClick(o)}>{`${o.name} (${o.country})`}</li>
             ))}
           </ul>
         </div>
