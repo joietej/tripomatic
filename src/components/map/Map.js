@@ -50,6 +50,11 @@ const Map = () => {
     setViewport(newViewport);
   };
 
+  const onSearch = (options) => {
+    setHotelSearchOptions(options);
+    setViewport({ ...viewport, latitude: options.lat, longitude: options.lon });
+  };
+
   return (
     <div>
       <ReactMapGl
@@ -70,7 +75,7 @@ const Map = () => {
           loading={isLoading}
           searchOptions={hotelSearchOptions}
           onLoodMore={() => setSize(size + 1)}
-          onSearch={(o) => setHotelSearchOptions(o)}
+          onSearch={onSearch}
         />
       </ReactMapGl>
     </div>

@@ -1,6 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import Typeahead from "../typeahead/Typeahead";
+import useCitySearch from "../../hooks/citySearch";
 
 const SearchIcon = () => (
   <>
@@ -35,6 +37,8 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
         return { ...state, checkout: action.value };
       case "rooms":
         return { ...state, rooms: action.value };
+      case "latlon":
+        return { ...state, lat: action.value.lat, lon: action.value.lon };
       case "reset":
         return init();
       default:
@@ -48,23 +52,37 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
     init
   );
 
+  const { cities, isLoading, error } = useCitySearch(newSearchOptions.location);
+
+
+  const onLocationChange = (value) => {
+    if (value !== newSearchOptions.location) {
+      dispatch({ type: "location", value });
+    }
+  };
+
+  const onLocationSelected = (city) => {
+    dispatch({
+      type: "latlon",
+      value: { lat: city.latitude, lon: city.longitude },
+    });
+  };
+
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
 
   return (
-    <div className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4">
-      <div className="grid grid-cols-2 md:flex md:justify-between">
-        <input
-          className="col-span-2 bg-gray-200 border-b-2 border-black"
+    <form className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4">
+      <div className="grid grid-cols-2 lg:flex lg:justify-between">
+        <Typeahead
           name="location"
-          type="text"
-          value={newSearchOptions.location || "Near Me"}
-          onChange={(e) =>
-            dispatch({ type: "location", value: e.target.value })
-          }
+          options={cities || []}
+          value={newSearchOptions.location || 'Near Me'}
+          onValueChange={onLocationChange}
+          onSelection={onLocationSelected}
         />
 
-        <div className="col-span-1  md:flex md:flex-1 md:justify-evenly">
-          <label htmlFor="checkin" className="w-full md:text-center">
+        <div className="col-span-1  lg:flex lg:flex-1 lg:justify-evenly">
+          <label htmlFor="checkin" className="w-full lg:text-center">
             Check-in
           </label>
           <input
@@ -77,8 +95,8 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
             }
           />
         </div>
-        <div className="col-span-1 md:flex md:flex-1 md:justify-evenly">
-          <label htmlFor="checkout" className="w-full  md:text-center">
+        <div className="col-span-1 lg:flex lg:flex-1 lg:justify-evenly">
+          <label htmlFor="checkout" className="w-full  lg:text-center">
             Check-out
           </label>
           <input
@@ -91,12 +109,12 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
             }
           />
         </div>
-        <div className="col-span-1 md:flex md:flex-1 md:justify-evenly">
-          <label htmlFor="rooms" className="w-full md:text-center">
+        <div className="col-span-1 lg:flex lg:flex-1 lg:justify-evenly">
+          <label htmlFor="rooms" className="w-full lg:w-auto lg:text-center">
             Rooms
           </label>
           <input
-            className="w-full bg-gray-200 border-b-2 border-black"
+            className="w-full lg:w-auto bg-gray-200 border-b-2 border-black"
             name="rooms"
             type="number"
             min={1}
@@ -117,7 +135,7 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
