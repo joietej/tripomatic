@@ -71,7 +71,7 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
 
   return (
-    <form className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4">
+    <div className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4">
       <div className="grid grid-cols-2 lg:flex lg:justify-between">
         <Typeahead
           name="location"
@@ -135,7 +135,7 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
           </button>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 
