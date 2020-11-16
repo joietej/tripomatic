@@ -12,11 +12,14 @@ const useHotelSearch = ({
   local = "en_US",
   cur = "USD",
   rooms = 1,
+  limitLatLong = true,
 }) => {
   const isValid = lat > 0 && lon > 0 && zoom > 10;
 
-  lat = fixedNumber(lat, 1);
-  lon = fixedNumber(lon, 1);
+  if (limitLatLong) {
+    lat = fixedNumber(lat, 1);
+    lon = fixedNumber(lon, 1);
+  }
 
   const url = `https://hotels-com-free.p.rapidapi.com/srle/listing/v1/brands/hotels.com?checkIn=${checkin}&checkOut=${checkout}&lat=${lat}&lon=${lon}&locale=${local}&rooms=${rooms}&currency=${cur}`;
 
@@ -41,7 +44,7 @@ const useHotelSearch = ({
     isValid ? getKey : null,
     (url) => fetcher(url, options),
     {
-      initialSize: 3,
+      initialSize: 1,
       revalidateAll: false,
       persistSize: true,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {

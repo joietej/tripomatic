@@ -1,8 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import Typeahead from "../typeahead/Typeahead";
-import useCitySearch from "../../hooks/citySearch";
+import LocationAutoComplete from "./LocationAutoComplete";
+import useLocationSearch from "../../hooks/locationSearch";
 
 const SearchIcon = () => (
   <>
@@ -24,13 +24,11 @@ const SpinnerIcon = () => (
   </>
 );
 
-const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
+const SearchForm = ({ searchOptions, loading, onSearch }) => {
   const init = () => ({ ...searchOptions });
 
   const searchOptionsReducer = (state, action) => {
     switch (action.type) {
-      case "location":
-        return { ...state, location: action.value };
       case "checkin":
         return { ...state, checkin: action.value };
       case "checkout":
@@ -38,7 +36,11 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
       case "rooms":
         return { ...state, rooms: action.value };
       case "latlon":
-        return { ...state, lat: action.value.lat, lon: action.value.lon };
+        return {
+          ...state,
+          lat: action.value.lat,
+          lon: action.value.lon,
+        };
       case "reset":
         return init();
       default:
@@ -52,31 +54,42 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
     init
   );
 
-  const { cities, isLoading, error } = useCitySearch(newSearchOptions.location);
+  const [searchLocation, setSearchLocation] = React.useState(null);
 
+  const { locations, isLoading, error } =  useLocationSearch(searchLocation);
 
   const onLocationChange = (value) => {
-    if (value !== newSearchOptions.location) {
-      dispatch({ type: "location", value });
+    if (value && value.length > 2) {
+      setSearchLocation(value);
     }
   };
 
   const onLocationSelected = (city) => {
     dispatch({
       type: "latlon",
-      value: { lat: city.latitude, lon: city.longitude },
+      value: {
+        lat: city.lat,
+        lon: city.lon,
+      },
     });
+  };
+
+  const onFormSumbit = (e) => {
+    onSearch(newSearchOptions);
+    e.preventDefault();
   };
 
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
 
   return (
-    <div className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4">
+    <form
+      onSubmit={onFormSumbit}
+      className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4"
+    >
       <div className="grid grid-cols-2 lg:flex lg:justify-between">
-        <Typeahead
+        <LocationAutoComplete
           name="location"
-          options={cities || []}
-          value={newSearchOptions.location || 'Near Me'}
+          locations={locations || []}
           onValueChange={onLocationChange}
           onSelection={onLocationSelected}
         />
@@ -125,9 +138,9 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
         </div>
         <div className="col-span-1 flex justify-end items-end">
           <button
+            type="submit"
             disabled={loading}
             className="ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
-            onClick={() => onSearch(newSearchOptions)}
           >
             <span className="px-4 text-center">
               {loading ? <SpinnerIcon /> : <SearchIcon />}
@@ -135,8 +148,8 @@ const Menu = ({ searchOptions, loading, onLoadMore, onSearch }) => {
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
-export default Menu;
+export default SearchForm;

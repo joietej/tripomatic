@@ -7,7 +7,7 @@ export const viewportState = atom({
   default: {
     width: "100vw",
     height: "100vh",
-    zoom: 13,
+    zoom: 11,
     latitude: 0,
     longitude: 0,
   },
@@ -18,9 +18,7 @@ const useViewport = () => {
   const { height, width } = useWindowSize();
 
   React.useEffect(() => {
-    if (height !== viewport.height || width !== viewport.width) {
-      setViewport({ ...viewport, height, width });
-    }
+    setViewport((current) => ({ ...current, height, width }));
   }, [height, width, setViewport]);
 
   return [viewport, setViewport];
