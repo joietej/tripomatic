@@ -91,7 +91,7 @@ const Map = () => {
           onSearch={onSearch}
         />
 
-        <button className="absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white" onClick={() => setSize(size + 1)}>More</button>
+        <button className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white" onClick={() => setSize(size + 1)}>More</button>
       </ReactMapGl>
     </div>
   );

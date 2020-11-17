@@ -140,7 +140,7 @@ const SearchForm = ({ searchOptions, loading, onSearch }) => {
           <button
             type="submit"
             disabled={loading}
-            className="ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
+            className=".cursor-pointer ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
           >
             <span className="px-4 text-center">
               {loading ? <SpinnerIcon /> : <SearchIcon />}
