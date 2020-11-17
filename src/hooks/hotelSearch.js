@@ -54,6 +54,8 @@ const useHotelSearch = ({
     }
   );
 
+  ;
+
   return {
     data:
       !error && data && data.length
@@ -61,7 +63,7 @@ const useHotelSearch = ({
             x && x.data ? x.data.body.searchResults.results : []
           )
         : [],
-    isLoading: !error && !data,
+    isLoading: !error && !data && isValid,
     isError: error,
     setSize,
     size,

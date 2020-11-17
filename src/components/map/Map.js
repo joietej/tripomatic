@@ -22,6 +22,9 @@ const Map = () => {
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
   React.useEffect(() => {
+
+    console.log("map:effect")
+
     const { latitude, longitude } = geolocation.location.coords;
 
     if (latitude === 0 && longitude === 0) {
@@ -50,11 +53,15 @@ const Map = () => {
   };
 
   const onViewportChange = (newViewport) => {
+
+    console.log("map:on viewport chnage")
+
     setHotelSearchOptions((current) => ({
       ...current,
       lat: newViewport.latitude,
       lon: newViewport.longitude,
       zoom: newViewport.zoom,
+      limitLatLong: true,
     }));
 
     setViewport(newViewport);
