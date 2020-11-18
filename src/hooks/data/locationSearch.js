@@ -1,4 +1,4 @@
-import fetcher from "../services/fetcher";
+import fetcher from "../../services/fetcher";
 import useSWR from "swr";
 
 const useLocationSearch = (value) => {

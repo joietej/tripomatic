@@ -2,43 +2,24 @@ import React from "react";
 import ReactMapGl from "react-map-gl";
 
 import SearchForm from "../search/SearchForm";
-
 import HotelMarker from "./HotelMarker";
 import HotelPopup from "./HotelPopup";
 
-import useViewport from "../../hooks/viewport";
-import useHotelSearch from "../../hooks/hotelSearch";
-import useHotelSearchOptions from "../../hooks/hotelSearchOptions";
-import useGeolocation from "../../hooks/geolocation";
+import useViewport from "../../hooks/state/viewport";
+import useSearchOptions from "../../hooks/state/searchOptions";
+import useLocation from "../../hooks/state/location";
+
+import useHotelSearch from "../../hooks/data/hotelSearch";
 
 const Map = () => {
-  const [geolocation] = useGeolocation();
+  useLocation();
   const [viewport, setViewport] = useViewport();
-  const [hotelSearchOptions, setHotelSearchOptions] = useHotelSearchOptions();
+  const [hotelSearchOptions, setHotelSearchOptions] = useSearchOptions();
   const { data, isLoading, isError, setSize, size } = useHotelSearch(
     hotelSearchOptions
   );
   const [showPopup, setShowPopup] = React.useState(false);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
-
-  React.useEffect(() => {
-
-    console.log("map:effect")
-
-    const { latitude, longitude } = geolocation.location.coords;
-
-    if (latitude === 0 && longitude === 0) {
-      return;
-    }
-    setHotelSearchOptions((current) => ({
-      ...current,
-      lat: latitude,
-      lon: longitude,
-      limitLatLong: false,
-    }));
-
-    setViewport((current) => ({ ...current, latitude, longitude }));
-  }, [geolocation, setViewport, setHotelSearchOptions]);
 
   const togglePopup = (value) => setShowPopup(value);
 
@@ -49,21 +30,9 @@ const Map = () => {
 
   const onSearch = (options) => {
     setHotelSearchOptions(options);
-    setViewport({ ...viewport, latitude: options.lat, longitude: options.lon });
   };
 
   const onViewportChange = (newViewport) => {
-
-    console.log("map:on viewport chnage")
-
-    setHotelSearchOptions((current) => ({
-      ...current,
-      lat: newViewport.latitude,
-      lon: newViewport.longitude,
-      zoom: newViewport.zoom,
-      limitLatLong: true,
-    }));
-
     setViewport(newViewport);
   };
 
@@ -91,7 +60,12 @@ const Map = () => {
           onSearch={onSearch}
         />
 
-        <button className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white" onClick={() => setSize(size + 1)}>More</button>
+        <button
+          className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
+          onClick={() => setSize(size + 1)}
+        >
+          More
+        </button>
       </ReactMapGl>
     </div>
   );

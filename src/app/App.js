@@ -7,7 +7,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import RecoilDebugger from "../components/RecoilDebugger";
 
 const App = () => {
-  
   return (
     <RecoilRoot>
       <RecoilDebugger />

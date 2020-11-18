@@ -1,4 +1,4 @@
-import fetcher from "../services/fetcher";
+import fetcher from "../../services/fetcher";
 import { useSWRInfinite } from "swr";
 
 const fixedNumber = (value, decimals) => Number(value.toFixed(decimals));
@@ -8,7 +8,7 @@ const useHotelSearch = ({
   lon = 0,
   checkin = 0,
   checkout = 0,
-  zoom = 1,
+  zoom = 11,
   local = "en_US",
   cur = "USD",
   rooms = 1,

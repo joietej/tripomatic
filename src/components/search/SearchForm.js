@@ -1,8 +1,11 @@
 import React from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation, faSpinner } from "@fortawesome/free-solid-svg-icons";
+
 import LocationAutoComplete from "./LocationAutoComplete";
-import useLocationSearch from "../../hooks/locationSearch";
+
+import useLocationSearch from "../../hooks/data/locationSearch";
 
 const SearchIcon = () => (
   <>
@@ -75,8 +78,8 @@ const SearchForm = ({ searchOptions, loading, onSearch }) => {
   };
 
   const onFormSumbit = (e) => {
-    onSearch(newSearchOptions);
     e.preventDefault();
+    onSearch(newSearchOptions);
   };
 
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
@@ -140,7 +143,7 @@ const SearchForm = ({ searchOptions, loading, onSearch }) => {
           <button
             type="submit"
             disabled={loading}
-            className=".cursor-pointer ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
+            className=".cursor-pointer ml-4 rounded border border-black bg-gray-800 text-white"
           >
             <span className="px-4 text-center">
               {loading ? <SpinnerIcon /> : <SearchIcon />}
