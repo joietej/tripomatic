@@ -2,21 +2,22 @@ import fetcher from "../../services/fetcher";
 import { useSWRInfinite } from "swr";
 import { useRecoilValue } from "recoil";
 import { zoomState } from "../state/viewport";
+import { searchOptionsState } from "../state/searchOptions";
 
 const fixedNumber = (value, decimals) => Number(value.toFixed(decimals));
 
-const useHotelSearch = ({
-  lat = 0,
-  lon = 0,
-  checkin = 0,
-  checkout = 0,
-  local = "en_US",
-  cur = "USD",
-  rooms = 1,
-  limitLatLong = true,
-}) => {
-
+const useHotelSearch = () => {
   const zoom = useRecoilValue(zoomState);
+  let {
+    lat,
+    lon,
+    checkin,
+    checkout,
+    local = "en_US",
+    cur = "USD",
+    rooms,
+    limitLatLong = true,
+  } = useRecoilValue(searchOptionsState);
 
   const isValid = lat > 0 && lon > 0 && zoom > 10;
 
@@ -57,8 +58,6 @@ const useHotelSearch = ({
       },
     }
   );
-
-  ;
 
   return {
     data:

@@ -6,7 +6,6 @@ import HotelMarker from "./HotelMarker";
 import HotelPopup from "./HotelPopup";
 
 import useViewport from "../../hooks/state/viewport";
-import useSearchOptions from "../../hooks/state/searchOptions";
 import useLocation from "../../hooks/state/location";
 
 import useHotelSearch from "../../hooks/data/hotelSearch";
@@ -14,10 +13,8 @@ import useHotelSearch from "../../hooks/data/hotelSearch";
 const Map = () => {
   useLocation();
   const [viewport, setViewport] = useViewport();
-  const [hotelSearchOptions, setHotelSearchOptions] = useSearchOptions();
-  const { data, isLoading, isError, setSize, size } = useHotelSearch(
-    hotelSearchOptions
-  );
+
+  const { data, isLoading, isError, setSize, size } = useHotelSearch();
   const [showPopup, setShowPopup] = React.useState(false);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
@@ -26,10 +23,6 @@ const Map = () => {
   const onMarkerClick = (marker) => {
     setSelectedMarker(marker);
     setShowPopup(true);
-  };
-
-  const onSearch = (options) => {
-    setHotelSearchOptions(options);
   };
 
   const onViewportChange = (newViewport) => {
@@ -54,11 +47,7 @@ const Map = () => {
           <HotelPopup marker={selectedMarker} onClose={togglePopup} />
         )}
 
-        <SearchForm
-          loading={isLoading}
-          searchOptions={hotelSearchOptions}
-          onSearch={onSearch}
-        />
+        <SearchForm loading={isLoading} />
 
         <button
           className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"

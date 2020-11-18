@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import LocationAutoComplete from "./LocationAutoComplete";
+import useSearchOptions from "../../hooks/state/searchOptions";
 
 import useLocationSearch from "../../hooks/data/locationSearch";
 
@@ -27,7 +28,9 @@ const SpinnerIcon = () => (
   </>
 );
 
-const SearchForm = ({ searchOptions, loading, onSearch }) => {
+const SearchForm = ({ loading }) => {
+
+  const [searchOptions, setSearchOptions] = useSearchOptions();
   const init = () => ({ ...searchOptions });
 
   const searchOptionsReducer = (state, action) => {
@@ -79,7 +82,7 @@ const SearchForm = ({ searchOptions, loading, onSearch }) => {
 
   const onFormSumbit = (e) => {
     e.preventDefault();
-    onSearch(newSearchOptions);
+    setSearchOptions(newSearchOptions);
   };
 
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
