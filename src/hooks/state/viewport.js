@@ -1,6 +1,6 @@
 import React from "react";
 
-import { selector, useRecoilState, DefaultValue } from "recoil";
+import { atom, selector, useRecoilState, DefaultValue } from "recoil";
 import { locationState } from "./location";
 
 import useWindowSize from "../windowSize";
@@ -8,17 +8,20 @@ import useWindowSize from "../windowSize";
 const defaultViewport = {
   width: "100vw",
   height: "100vh",
-  zoom: 11,
 };
+
+export const zoomState = atom({key:'zoomState', default: 11});
 
 const viewportState = selector({
   key: "viewportState",
   get: ({ get }) => {
     const { coords } = get(locationState);
+    const zoom = get(zoomState);
     return {
       ...defaultViewport,
       latitude: coords.latitude,
       longitude: coords.longitude,
+      zoom
     };
   },
   set: ({ set }, newValue) => {
@@ -32,6 +35,12 @@ const viewportState = selector({
               longitude: newValue.longitude,
             },
           }
+    );
+    set(
+      zoomState,
+      newValue instanceof DefaultValue
+        ? newValue
+        : newValue.zoom
     );
   },
 });

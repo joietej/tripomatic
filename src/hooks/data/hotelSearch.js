@@ -1,5 +1,7 @@
 import fetcher from "../../services/fetcher";
 import { useSWRInfinite } from "swr";
+import { useRecoilValue } from "recoil";
+import { zoomState } from "../state/viewport";
 
 const fixedNumber = (value, decimals) => Number(value.toFixed(decimals));
 
@@ -8,12 +10,14 @@ const useHotelSearch = ({
   lon = 0,
   checkin = 0,
   checkout = 0,
-  zoom = 11,
   local = "en_US",
   cur = "USD",
   rooms = 1,
   limitLatLong = true,
 }) => {
+
+  const zoom = useRecoilValue(zoomState);
+
   const isValid = lat > 0 && lon > 0 && zoom > 10;
 
   if (limitLatLong) {

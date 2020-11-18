@@ -1,4 +1,4 @@
-import { selector, useRecoilState, DefaultValue } from "recoil";
+import { atom, selector, useRecoilState, DefaultValue } from "recoil";
 import { locationState } from "./location";
 
 const today = new Date();
@@ -13,12 +13,18 @@ export const defaultSearchOptions = {
   children: 0,
 };
 
+export const optionsState = atom({
+  key: "optionsState",
+  default: defaultSearchOptions,
+});
+
 export const searchOptionsState = selector({
   key: "searchOptionsState",
   get: ({ get }) => {
     const { coords } = get(locationState);
+    const options = get(optionsState);
     return {
-      ...defaultSearchOptions,
+      ...options,
       lat: coords.latitude,
       lon: coords.longitude,
     };
@@ -33,6 +39,16 @@ export const searchOptionsState = selector({
               latitude: newValue.lat,
               longitude: newValue.lon,
             },
+          }
+    );
+    set(
+      optionsState,
+      newValue instanceof DefaultValue
+        ? newValue
+        : {
+            checkin: newValue.checkin,
+            checkout: newValue.checkout,
+            rooms: newValue.rooms,
           }
     );
   },
