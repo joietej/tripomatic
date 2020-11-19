@@ -24,3 +24,5 @@ yarn-error.log*
 trash.js
 .env
 .ionide/symbolCache.db
+
+/sample

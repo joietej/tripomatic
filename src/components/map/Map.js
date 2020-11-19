@@ -3,7 +3,7 @@ import ReactMapGl, {Popup} from "react-map-gl";
 
 import SearchForm from "../search/SearchForm";
 import HotelMarker from "./HotelMarker";
-import Hotel from "./Hotel";
+import Hotel from "../hotel/Hotel";
 
 import useViewport from "../../hooks/state/viewport";
 import useLocation from "../../hooks/state/location";
