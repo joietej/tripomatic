@@ -15,6 +15,9 @@ const useLocation = () => {
   const [location, setLocation] = useRecoilState(locationState);
 
   React.useEffect(() => {
+    if(!navigator?.geolocation){
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       (location) => setLocation(location),
       (e) => console.log(e),
