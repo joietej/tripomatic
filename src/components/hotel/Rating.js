@@ -10,7 +10,7 @@ const Rating = ({ ratingNumber = 0 }) => {
     !ratingNumber && !typeof ratingNumber === "number" ? 0 : ratingNumber;
 
   return (
-    <div>
+    <div className="inline-block py-2 px-1 opacity-50 bg-gray-400 rounded-lg">
       {total.map((_, i) =>
         stars >= i + 1 ? (
           stars < i + 2 && stars > i + 1 ? (
