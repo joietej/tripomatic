@@ -18,6 +18,9 @@ const Hotel = ({ hotel }) => {
         <h2 className="text-xl font-semibold text-white sm:text-gray-500 sm:text-2xl md:text-3xl">
           {hotel.name}
         </h2>
+        <h3 className="text-xs font-medium text-white sm:text-gray-500">
+          {hotel.address?.streetAddress || ""}
+        </h3>
         <div className="pt-4">
           {hotel.guestReviews && <Reviews reviews={hotel.guestReviews} />}
         </div>
