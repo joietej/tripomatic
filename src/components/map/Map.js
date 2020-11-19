@@ -1,5 +1,5 @@
 import React from "react";
-import ReactMapGl, {Popup} from "react-map-gl";
+import ReactMapGl, { Popup } from "react-map-gl";
 
 import SearchForm from "../search/SearchForm";
 import HotelMarker from "./HotelMarker";
@@ -16,7 +16,12 @@ const Map = () => {
   const [showPopup, setShowPopup] = React.useState(false);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
-  const togglePopup = (value) => setShowPopup(value);
+  const togglePopup = (value) => {
+    setShowPopup(value);
+    if(!value){
+      setSelectedMarker(null);
+    }
+  }
 
   const onMarkerClick = (marker) => {
     setSelectedMarker(marker);
@@ -38,14 +43,20 @@ const Map = () => {
           <pre>Error</pre>
         ) : (
           data.map((m) => (
-            <HotelMarker key={m.id} marker={m} onClick={onMarkerClick} />
+            <HotelMarker
+              key={m.id}
+              marker={m}
+              onClick={onMarkerClick}
+              isSelected={m.id === selectedMarker?.id}
+            />
           ))
         )}
         {showPopup && (
           <Popup
-          latitude={selectedMarker.coordinate.lat}
-          longitude={selectedMarker.coordinate.lon}
-          onClose={() => togglePopup(false)}
+            className="opacity-80"
+            latitude={selectedMarker.coordinate.lat}
+            longitude={selectedMarker.coordinate.lon}
+            onClose={() => togglePopup(false)}
           >
             <Hotel hotel={selectedMarker} />
           </Popup>
@@ -53,7 +64,8 @@ const Map = () => {
 
         <SearchForm loading={isLoading} />
 
-        <button data-testid="map-more-button"
+        <button
+          data-testid="map-more-button"
           className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
           onClick={() => setSize(size + 1)}
         >
