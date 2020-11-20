@@ -7,20 +7,7 @@ import LocationAutoComplete from "./LocationAutoComplete";
 import useSearchOptions from "../../hooks/state/searchOptions";
 
 import useLocationSearch from "../../hooks/data/locationSearch";
-
-const SearchIcon = () => (
-  <FontAwesomeIcon
-    icon={faSearchLocation}
-    className="fill-current text-gray-100"
-  ></FontAwesomeIcon>
-);
-
-const SpinnerIcon = () => (
-  <FontAwesomeIcon
-    icon={faSpinner}
-    className="fa-spin fill-current text-gray-100"
-  ></FontAwesomeIcon>
-);
+import IconButton from "../common/IconButton";
 
 const SearchForm = ({ loading }) => {
   const [searchOptions, setSearchOptions] = useSearchOptions();
@@ -136,14 +123,11 @@ const SearchForm = ({ loading }) => {
           />
         </div>
         <div className="col-span-1 flex justify-end items-end">
-          <button
-            type="submit"
-            className=".cursor-pointer ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white inline-flex items-center"
-          >
-            {loading
-              ? (<span>Search</span>)(<SpinnerIcon />)
-              : (<span>Loading</span>)(<SearchIcon />)}
-          </button>
+          {loading ? (
+            <IconButton text="Loading" type="submit" spin icon={faSpinner} />
+          ) : (
+            <IconButton text="Search" type="submit" icon={faSearchLocation} />
+          )}
         </div>
       </div>
     </form>
