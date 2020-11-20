@@ -9,27 +9,20 @@ import useSearchOptions from "../../hooks/state/searchOptions";
 import useLocationSearch from "../../hooks/data/locationSearch";
 
 const SearchIcon = () => (
-  <>
-    <span className="text-gray-100 px-2 py-2 mx-2 text-sm">Search</span>
-    <FontAwesomeIcon
-      icon={faSearchLocation}
-      className="fill-current text-gray-100"
-    ></FontAwesomeIcon>
-  </>
+  <FontAwesomeIcon
+    icon={faSearchLocation}
+    className="fill-current text-gray-100"
+  ></FontAwesomeIcon>
 );
 
 const SpinnerIcon = () => (
-  <>
-    <span className="text-gray-100 px-2 py-2 mx-2 text-sm">Loading</span>
-    <FontAwesomeIcon
-      icon={faSpinner}
-      className="fa-spin fill-current text-gray-100"
-    ></FontAwesomeIcon>
-  </>
+  <FontAwesomeIcon
+    icon={faSpinner}
+    className="fa-spin fill-current text-gray-100"
+  ></FontAwesomeIcon>
 );
 
 const SearchForm = ({ loading }) => {
-
   const [searchOptions, setSearchOptions] = useSearchOptions();
   const init = () => ({ ...searchOptions });
 
@@ -62,7 +55,7 @@ const SearchForm = ({ loading }) => {
 
   const [searchLocation, setSearchLocation] = React.useState(null);
 
-  const { locations, isLoading, error } =  useLocationSearch(searchLocation);
+  const { locations, isLoading, error } = useLocationSearch(searchLocation);
 
   const onLocationChange = (value) => {
     if (value && value.length > 2) {
@@ -145,12 +138,11 @@ const SearchForm = ({ loading }) => {
         <div className="col-span-1 flex justify-end items-end">
           <button
             type="submit"
-            disabled={loading}
-            className=".cursor-pointer ml-4 rounded border border-black bg-gray-800 text-white"
+            className=".cursor-pointer ml-4 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white inline-flex items-center"
           >
-            <span className="px-4 text-center">
-              {loading ? <SpinnerIcon /> : <SearchIcon />}
-            </span>
+            {loading
+              ? (<span>Search</span>)(<SpinnerIcon />)
+              : (<span>Loading</span>)(<SearchIcon />)}
           </button>
         </div>
       </div>
