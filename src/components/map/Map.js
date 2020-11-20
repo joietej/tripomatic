@@ -18,10 +18,10 @@ const Map = () => {
 
   const togglePopup = (value) => {
     setShowPopup(value);
-    if(!value){
+    if (!value) {
       setSelectedMarker(null);
     }
-  }
+  };
 
   const onMarkerClick = (marker) => {
     setSelectedMarker(marker);
@@ -66,7 +66,7 @@ const Map = () => {
 
         <button
           data-testid="map-more-button"
-          className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded border border-black bg-gray-800 hover:bg-gray-600 text-white"
+          className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded  bg-gray-600 hover:bg-gray-800 text-white"
           onClick={() => setSize(size + 1)}
         >
           More
