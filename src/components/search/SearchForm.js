@@ -39,7 +39,7 @@ const SearchForm = ({ loading }) => {
   return (
     <form
       onSubmit={handleSubmit(onFormSumbit)}
-      className="rounded-lg border mx-4 my-4 bg-gray-200 px-4 py-4"
+      className="frm mx-4 my-4"
     >
       <div className="grid grid-cols-2 lg:flex lg:justify-between">
         <LocationAutoComplete
@@ -54,7 +54,7 @@ const SearchForm = ({ loading }) => {
             Check-in
           </label>
           <input
-            className="w-full bg-gray-200 border-b-2 border-black"
+            className="frm-ctrl"
             name="checkin"
             type="date"
             defaultValue={searchOptions.checkin}
@@ -66,7 +66,7 @@ const SearchForm = ({ loading }) => {
             Check-out
           </label>
           <input
-            className="w-full bg-gray-200 border-b-2 border-black"
+            className="frm-ctrl"
             name="checkout"
             type="date"
             defaultValue={searchOptions.checkout}
@@ -78,7 +78,7 @@ const SearchForm = ({ loading }) => {
             Rooms
           </label>
           <input
-            className="w-full lg:w-auto bg-gray-200 border-b-2 border-black"
+            className="frm-ctrl lg:w-auto"
             name="rooms"
             type="number"
             min={1}

@@ -33,14 +33,14 @@ const LocationAutoComplete = ({
     <div className="col-span-2" ref={measuredRef}>
       <input
         type="text"
-        className="appearance-none w-full bg-gray-200 border-b-2 border-black focus:border-b-2"
+        className="frm-ctrl"
         value={text}
         onChange={onInputChange}
       ></input>
       {showLocations && locations && locations.length > 0 && (
         <div
           style={{ width: width }}
-          className="my-2 px-4 py-4 absolute shadow border bg-gray-200 rounded-lg"
+          className="my-2 px-4 py-4 absolute shadow border bg rounded-lg"
         >
           <ul>
             {locations.map((l) => (

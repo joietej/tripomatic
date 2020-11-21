@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.bg {
+  @apply bg-gray-200
+}
+
 .btn {
    @apply cursor-pointer px-2 py-1 rounded bg-gray-800 text-white
 }
@@ -13,5 +18,17 @@
 .btn-lg {
     @apply cursor-pointer px-4 py-2 rounded bg-gray-800 text-white
  }
+
+.frm {
+    @apply rounded-lg border bg px-4 py-4
+}
+
+.frm-ctrl {
+   @apply w-full bg border-b-2 border-black
+}
+
+.frm-ctrl:focus {
+    @apply outline-none shadow-outline border-blue-400
+}
 
 
