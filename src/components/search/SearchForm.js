@@ -19,6 +19,8 @@ const SearchForm = ({ loading }) => {
 
   const { locations, isLoading, error } = useLocationSearch(searchLocation);
 
+  const [color,setColor] = React.useState('black');
+
   const onLocationChange = (value) => {
     if (value && value.length > 2) {
       setSearchLocation(value);
@@ -36,14 +38,16 @@ const SearchForm = ({ loading }) => {
   };
 
   const onFormSumbit = (e) => {
-    setSearchOptions(newSearchOptions);
     e.preventDefault();
+    setSearchOptions(newSearchOptions);
+    setColor('blue');
   };
 
   return (
     <form
       onSubmit={onFormSumbit}
-      className="rounded-lg mx-4 my-4 bg-gray-200 px-4 py-4"
+      style={{borderColor:color}}
+      className="rounded-lg border mx-4 my-4 bg-gray-200 px-4 py-4"
     >
       <div className="grid grid-cols-2 lg:flex lg:justify-between">
         <LocationAutoComplete
