@@ -1,44 +1,19 @@
 import React from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import LocationAutoComplete from "./LocationAutoComplete";
-import useSearchOptions from "../../hooks/state/searchOptions";
 
 import useLocationSearch from "../../hooks/data/locationSearch";
 import IconButton from "../common/IconButton";
+import useSearchOptionsReducer from "../../hooks/store/searchOptionsReducer";
 
 const SearchForm = ({ loading }) => {
-  const [searchOptions, setSearchOptions] = useSearchOptions();
-  const init = () => ({ ...searchOptions });
-
-  const searchOptionsReducer = (state, action) => {
-    switch (action.type) {
-      case "checkin":
-        return { ...state, checkin: action.value };
-      case "checkout":
-        return { ...state, checkout: action.value };
-      case "rooms":
-        return { ...state, rooms: action.value };
-      case "latlon":
-        return {
-          ...state,
-          lat: action.value.lat,
-          lon: action.value.lon,
-        };
-      case "reset":
-        return init();
-      default:
-        return state;
-    }
-  };
-
-  const [newSearchOptions, dispatch] = React.useReducer(
-    searchOptionsReducer,
-    searchOptions,
-    init
-  );
+  const {
+    newSearchOptions,
+    dispatch,
+    setSearchOptions,
+  } = useSearchOptionsReducer();
 
   const [searchLocation, setSearchLocation] = React.useState(null);
 
@@ -61,13 +36,9 @@ const SearchForm = ({ loading }) => {
   };
 
   const onFormSumbit = (e) => {
-    //e.preventDefault();
-    //e.stopPropagation();
     setSearchOptions(newSearchOptions);
     e.preventDefault();
   };
-
-  React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
 
   return (
     <form
