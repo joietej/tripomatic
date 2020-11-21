@@ -1,3 +1,5 @@
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 const LocationAutoComplete = ({
@@ -37,6 +39,7 @@ const LocationAutoComplete = ({
         value={text}
         onChange={onInputChange}
       ></input>
+      <FontAwesomeIcon onClick={() => setText('')} className="absolute mt-1 -ml-4" icon={faTimesCircle}/>
       {showLocations && locations && locations.length > 0 && (
         <div
           style={{ width: width }}
