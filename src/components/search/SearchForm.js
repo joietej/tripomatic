@@ -16,10 +16,14 @@ const SearchForm = ({ loading }) => {
   const { locations, isLoading, error } = useLocationSearch(
     searchLocationQuery
   );
-  const [selectedLocation, setSelectedLocation] = React.useState({
-    lat: searchOptions.lat,
-    lon: searchOptions.lon,
-  });
+  const [selectedLocation, setSelectedLocation] = React.useState(null);
+
+  React.useEffect(() => {
+    setSelectedLocation({
+      lat: searchOptions.lat,
+      lon: searchOptions.lon,
+    });
+  }, [searchOptions]);
 
   const onLocationChange = (value) => {
     if (value && value.length > 2) {
@@ -37,10 +41,7 @@ const SearchForm = ({ loading }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onFormSumbit)}
-      className="frm mx-4 my-4"
-    >
+    <form onSubmit={handleSubmit(onFormSumbit)} className="frm mx-4 my-4">
       <div className="grid grid-cols-2 lg:flex lg:justify-between">
         <LocationAutoComplete
           name="location"
