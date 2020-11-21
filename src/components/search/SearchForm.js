@@ -6,47 +6,39 @@ import LocationAutoComplete from "./LocationAutoComplete";
 
 import useLocationSearch from "../../hooks/data/locationSearch";
 import IconButton from "../common/IconButton";
-import useSearchOptionsReducer from "../../hooks/store/searchOptionsReducer";
+import { useForm } from "react-hook-form";
+import useSearchOptions from "../../hooks/state/searchOptions";
 
 const SearchForm = ({ loading }) => {
-  const {
-    newSearchOptions,
-    dispatch,
-    setSearchOptions,
-  } = useSearchOptionsReducer();
-
-  const [searchLocation, setSearchLocation] = React.useState(null);
-
-  const { locations, isLoading, error } = useLocationSearch(searchLocation);
-
-  const [color,setColor] = React.useState('black');
+  const { register, handleSubmit, watch, errors } = useForm();
+  const [searchOptions, setSearchOptions] = useSearchOptions();
+  const [searchLocationQuery, setSearchLocationQuery] = React.useState(null);
+  const { locations, isLoading, error } = useLocationSearch(
+    searchLocationQuery
+  );
+  const [selectedLocation, setSelectedLocation] = React.useState({
+    lat: searchOptions.lat,
+    lon: searchOptions.lon,
+  });
 
   const onLocationChange = (value) => {
     if (value && value.length > 2) {
-      setSearchLocation(value);
+      setSearchLocationQuery(value);
     }
   };
 
-  const onLocationSelected = (city) => {
-    dispatch({
-      type: "latlon",
-      value: {
-        lat: city.lat,
-        lon: city.lon,
-      },
-    });
+  const onLocationSelected = ({ lat, lon }) => {
+    setSelectedLocation({ lat, lon });
   };
 
-  const onFormSumbit = (e) => {
-    e.preventDefault();
-    setSearchOptions(newSearchOptions);
-    setColor('blue');
+  const onFormSumbit = ({ checkin, checkout, rooms }) => {
+    const { lat, lon } = selectedLocation;
+    setSearchOptions({ checkin, checkout, rooms, lat, lon });
   };
 
   return (
     <form
-      onSubmit={onFormSumbit}
-      style={{borderColor:color}}
+      onSubmit={handleSubmit(onFormSumbit)}
       className="rounded-lg border mx-4 my-4 bg-gray-200 px-4 py-4"
     >
       <div className="grid grid-cols-2 lg:flex lg:justify-between">
@@ -65,10 +57,8 @@ const SearchForm = ({ loading }) => {
             className="w-full bg-gray-200 border-b-2 border-black"
             name="checkin"
             type="date"
-            value={newSearchOptions.checkin}
-            onChange={(e) =>
-              dispatch({ type: "checkin", value: e.target.value })
-            }
+            defaultValue={searchOptions.checkin}
+            ref={register}
           />
         </div>
         <div className="col-span-1 lg:flex lg:flex-1 lg:justify-evenly">
@@ -79,10 +69,8 @@ const SearchForm = ({ loading }) => {
             className="w-full bg-gray-200 border-b-2 border-black"
             name="checkout"
             type="date"
-            value={newSearchOptions.checkout}
-            onChange={(e) =>
-              dispatch({ type: "checkout", value: e.target.value })
-            }
+            defaultValue={searchOptions.checkout}
+            ref={register}
           />
         </div>
         <div className="col-span-1 lg:flex lg:flex-1 lg:justify-evenly">
@@ -95,8 +83,8 @@ const SearchForm = ({ loading }) => {
             type="number"
             min={1}
             max={3}
-            value={newSearchOptions.rooms}
-            onChange={(e) => dispatch({ type: "rooms", value: e.target.value })}
+            defaultValue={searchOptions.rooms}
+            ref={register}
           />
         </div>
         <div className="col-span-1 flex justify-end items-end">

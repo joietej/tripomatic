@@ -7,7 +7,7 @@
 }
 
 .btn:focus {
-    @apply outline-none border-gray-600 
+    @apply outline-none shadow-outline border-blue-400
 }
 
 .btn-lg {
