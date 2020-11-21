@@ -7,7 +7,7 @@ const IconButton = ({
   icon,
   spin = false,
   pulse = false,
-  buttonClassName = ".cursor-pointer rounded bg-gray-600 hover:bg-gray-800 text-white py-2 px-4 inline-flex items-center",
+  buttonClassName = "btn inline-flex items-center",
   iconClassName = "fill-current text-gray-100 ml-2",
   ...rest
 }) => {

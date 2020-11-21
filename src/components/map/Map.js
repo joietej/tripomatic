@@ -66,7 +66,7 @@ const Map = () => {
 
         <button
           data-testid="map-more-button"
-          className=".cursor-pointer absolute my-8 mx-8 px-2 py-1 bottom-0 right-0 rounded  bg-gray-600 hover:bg-gray-800 text-white"
+          className="btn absolute my-8 mx-8 bottom-0 right-0"
           onClick={() => setSize(size + 1)}
         >
           More

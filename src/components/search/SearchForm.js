@@ -61,8 +61,10 @@ const SearchForm = ({ loading }) => {
   };
 
   const onFormSumbit = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
+    //e.stopPropagation();
     setSearchOptions(newSearchOptions);
+    e.preventDefault();
   };
 
   React.useEffect(() => dispatch({ type: "reset" }), [searchOptions]);
