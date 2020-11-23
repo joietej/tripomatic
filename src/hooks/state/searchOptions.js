@@ -1,9 +1,13 @@
 import { atom, selector, useRecoilState, DefaultValue } from "recoil";
 import { locationState } from "./location";
+import { zoomState } from "./viewport";
 
 const today = new Date();
 const tomorrow = new Date(new Date().setDate(today.getDate() + 1));
 const formatDate = (date) => date.toISOString().split("T")[0];
+
+const setStateValue = (set, state, newValue, value) =>
+  set(state, newValue instanceof DefaultValue ? newValue : value);
 
 export const defaultSearchOptions = {
   checkin: formatDate(today),
@@ -30,29 +34,31 @@ export const searchOptionsState = selector({
     };
   },
   set: ({ set }, newValue) => {
-    set(
-      locationState,
-      newValue instanceof DefaultValue
-        ? newValue
-        : {
-            coords: {
-              latitude: newValue.lat,
-              longitude: newValue.lon,
-            },
-          }
-    );
-    set(
-      optionsState,
-      newValue instanceof DefaultValue
-        ? newValue
-        : {
-            checkin: newValue.checkin,
-            checkout: newValue.checkout,
-            rooms: newValue.rooms,
-          }
-    );
+    setLocationState(set, newValue);
+    setOptionsState(set, newValue);
+    setZoomState(set, newValue);
   },
 });
+
+const setZoomState = (set, newValue) =>
+  setStateValue(set, zoomState, newValue, {
+    zoom: 11,
+  });
+
+const setOptionsState = (set, newValue) =>
+  setStateValue(set, optionsState, newValue, {
+    checkin: newValue.checkin,
+    checkout: newValue.checkout,
+    rooms: newValue.rooms,
+  });
+
+const setLocationState = (set, newValue) =>
+  setStateValue(set, locationState, newValue, {
+    coords: {
+      latitude: newValue.lat,
+      longitude: newValue.lon,
+    },
+  });
 
 const useSearchOptions = () => {
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);

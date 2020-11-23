@@ -9,14 +9,17 @@ import IconButton from "../common/IconButton";
 import { useForm } from "react-hook-form";
 import useSearchOptions from "../../hooks/state/searchOptions";
 
-const SearchForm = ({ loading }) => {
+
+const SearchForm = ({ isDataLoading }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   const [searchOptions, setSearchOptions] = useSearchOptions();
   const [searchLocationQuery, setSearchLocationQuery] = React.useState(null);
-  const { locations, isLoading, error } = useLocationSearch(
+  const { locations, isLocationLoading, error } = useLocationSearch(
     searchLocationQuery
   );
   const [selectedLocation, setSelectedLocation] = React.useState(null);
+
+  const isLoading = isDataLoading || isLocationLoading;
 
   React.useEffect(() => {
     setSelectedLocation({
@@ -33,6 +36,7 @@ const SearchForm = ({ loading }) => {
 
   const onLocationSelected = ({ lat, lon }) => {
     setSelectedLocation({ lat, lon });
+    setSearchOptions({ ...searchOptions, lat, lon });
   };
 
   const onFormSumbit = ({ checkin, checkout, rooms }) => {
@@ -88,11 +92,14 @@ const SearchForm = ({ loading }) => {
             ref={register}
           />
         </div>
-        <div className="col-span-1 flex justify-end items-end">
-          {loading ? (
-            <IconButton text="Loading" type="submit" spin icon={faSpinner} />
+        <div
+          className="col-span-1 flex justify-end items-end"
+          
+        >
+          {isDataLoading ? (
+            <IconButton disabled={isLoading} text="Loading" type="submit" spin icon={faSpinner} />
           ) : (
-            <IconButton text="Search" type="submit" icon={faSearchLocation} />
+            <IconButton disabled={isLoading} text="Search" type="submit" icon={faSearchLocation} />
           )}
         </div>
       </div>

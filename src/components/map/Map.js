@@ -12,7 +12,13 @@ import useHotelSearch from "../../hooks/data/hotelSearch";
 const Map = () => {
   useLocation();
   const [viewport, setViewport] = useViewport();
-  const { data, isLoading, isError, setSize, size } = useHotelSearch();
+  const {
+    data,
+    isLoading: isDataLoading,
+    error,
+    setSize,
+    size,
+  } = useHotelSearch();
   const [showPopup, setShowPopup] = React.useState(false);
   const [selectedMarker, setSelectedMarker] = React.useState(null);
 
@@ -32,15 +38,17 @@ const Map = () => {
     setViewport(newViewport);
   };
 
+  const hasLocation = viewport.latitude && viewport.longitude;
+
   return (
     <div>
-      <ReactMapGl
+      {hasLocation ? (<ReactMapGl
         {...viewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={onViewportChange}
       >
-        {isError ? (
-          <pre>Error</pre>
+        {error ? (
+          <pre className="text-red-600">{error}</pre>
         ) : (
           data.map((m) => (
             <HotelMarker
@@ -62,16 +70,17 @@ const Map = () => {
           </Popup>
         )}
 
-        <SearchForm loading={isLoading} />
+        <SearchForm isDataLoading={isDataLoading} />
 
         <button
           data-testid="map-more-button"
           className="btn absolute my-8 mx-8 bottom-0 right-0"
           onClick={() => setSize(size + 1)}
         >
-          More
+          More...
         </button>
-      </ReactMapGl>
+      </ReactMapGl>) : (<span className="absolute font-extrabold text-9xl text-gray-800 right-0 bottom-0 mb-8 mr-8"> Tripomatic</span>)}
+      
     </div>
   );
 };
