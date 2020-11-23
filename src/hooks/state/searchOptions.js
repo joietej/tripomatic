@@ -41,9 +41,7 @@ export const searchOptionsState = selector({
 });
 
 const setZoomState = (set, newValue) =>
-  setStateValue(set, zoomState, newValue, {
-    zoom: 11,
-  });
+  setStateValue(set, zoomState, newValue, 11);
 
 const setOptionsState = (set, newValue) =>
   setStateValue(set, optionsState, newValue, {

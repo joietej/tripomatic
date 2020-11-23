@@ -8,6 +8,8 @@ import Hotel from "../hotel/Hotel";
 import useViewport from "../../hooks/state/viewport";
 import useLocation from "../../hooks/state/location";
 import useHotelSearch from "../../hooks/data/hotelSearch";
+import { faLuggageCart } from "@fortawesome/free-solid-svg-icons";
+import IconButton from "../common/IconButton";
 
 const Map = () => {
   useLocation();
@@ -42,45 +44,48 @@ const Map = () => {
 
   return (
     <div>
-      {hasLocation ? (<ReactMapGl
-        {...viewport}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        onViewportChange={onViewportChange}
-      >
-        {error ? (
-          <pre className="text-red-600">{error}</pre>
-        ) : (
-          data.map((m) => (
-            <HotelMarker
-              key={m.id}
-              marker={m}
-              onClick={onMarkerClick}
-              isSelected={m.id === selectedMarker?.id}
-            />
-          ))
-        )}
-        {showPopup && (
-          <Popup
-            className="opacity-80"
-            latitude={selectedMarker.coordinate.lat}
-            longitude={selectedMarker.coordinate.lon}
-            onClose={() => togglePopup(false)}
-          >
-            <Hotel hotel={selectedMarker} />
-          </Popup>
-        )}
-
-        <SearchForm isDataLoading={isDataLoading} />
-
-        <button
-          data-testid="map-more-button"
-          className="btn absolute my-8 mx-8 bottom-0 right-0"
-          onClick={() => setSize(size + 1)}
+      {hasLocation && (
+        <ReactMapGl
+          {...viewport}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          onViewportChange={onViewportChange}
         >
-          More...
-        </button>
-      </ReactMapGl>) : (<span className="absolute font-extrabold text-9xl text-gray-800 right-0 bottom-0 mb-8 mr-8"> Tripomatic</span>)}
-      
+          {error ? (
+            <pre className="text-red-600">{error}</pre>
+          ) : (
+            data.map((m) => (
+              <HotelMarker
+                key={m.id}
+                marker={m}
+                onClick={onMarkerClick}
+                isSelected={m.id === selectedMarker?.id}
+              />
+            ))
+          )}
+          {showPopup && (
+            <Popup
+              className="opacity-80"
+              latitude={selectedMarker.coordinate.lat}
+              longitude={selectedMarker.coordinate.lon}
+              onClose={() => togglePopup(false)}
+            >
+              <Hotel hotel={selectedMarker} />
+            </Popup>
+          )}
+
+          <SearchForm isDataLoading={isDataLoading} />
+
+          <IconButton
+            text="more"
+            buttonClassName="btn absolute mb-8 ml-4 bottom-0 left-0 text-sm"
+            icon={faLuggageCart}
+            onClick={() => setSize(size + 1)}
+          />
+        </ReactMapGl>
+      )}
+      <span className="absolute font-extrabold text-9xl text-gray-800 right-0 bottom-0 mb-8 mr-4">
+        Tripomatic
+      </span>
     </div>
   );
 };

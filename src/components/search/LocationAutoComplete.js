@@ -31,6 +31,13 @@ const LocationAutoComplete = ({
     setShowLocations(false);
   };
 
+  const inputRef = React.useRef(null);
+
+  const onClose = () => {
+    setText('');
+    inputRef.current.focus();
+  }
+
   return (
     <div className="col-span-2" ref={measuredRef}>
       <input
@@ -38,8 +45,9 @@ const LocationAutoComplete = ({
         className="frm-ctrl"
         value={text}
         onChange={onInputChange}
+        ref={inputRef}
       ></input>
-      <FontAwesomeIcon onClick={() => setText('')} className="absolute mt-1 -ml-4" icon={faTimesCircle}/>
+      <FontAwesomeIcon onClick={onClose} className="absolute mt-1 -ml-4" icon={faTimesCircle}/>
       {showLocations && locations && locations.length > 0 && (
         <div
           style={{ width: width }}
