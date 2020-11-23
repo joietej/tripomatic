@@ -1,5 +1,6 @@
+import { useDebugValue } from "react";
 import fetcher from "../../services/fetcher";
-import { useSWRInfinite } from "swr";
+import useSWR from "swr";
 import { useRecoilValue } from "recoil";
 import { zoomState } from "../state/viewport";
 import { searchOptionsState } from "../state/searchOptions";
@@ -17,6 +18,7 @@ const useHotelSearch = () => {
     cur = "USD",
     rooms,
     limitLatLong = true,
+    pageNumber = 1,
   } = useRecoilValue(searchOptionsState);
 
   const isValid = lat > 0 && lon > 0 && zoom > 10;
@@ -26,17 +28,7 @@ const useHotelSearch = () => {
     lon = fixedNumber(lon, 1);
   }
 
-  const url = `https://hotels-com-free.p.rapidapi.com/srle/listing/v1/brands/hotels.com?checkIn=${checkin}&checkOut=${checkout}&lat=${lat}&lon=${lon}&locale=${local}&rooms=${rooms}&currency=${cur}`;
-
-  const getKey = (pageIndex, previousPageData) => {
-    const key =
-      pageIndex === 0
-        ? `${url}&pageNumber=1`
-        : previousPageData
-        ? `${url}&pageNumber=${pageIndex + 1}`
-        : null;
-    return key;
-  };
+  const url = `https://hotels-com-free.p.rapidapi.com/srle/listing/v1/brands/hotels.com?checkIn=${checkin}&checkOut=${checkout}&lat=${lat}&lon=${lon}&locale=${local}&rooms=${rooms}&currency=${cur}&pageNumber=${pageNumber}`;
 
   const options = {
     method: "GET",
@@ -45,13 +37,11 @@ const useHotelSearch = () => {
       "x-rapidapi-host": process.env.REACT_APP_RAPID_API_HOST,
     },
   };
-  const { data, size, setSize, error } = useSWRInfinite(
-    isValid ? getKey : null,
+  const { data, error } = useSWR(
+    isValid ? url : null,
     (url) => fetcher(url, options),
     {
-      initialSize: 1,
-      revalidateAll: false,
-      persistSize: true,
+      dedupingInterval: 20000,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         // Never retry on 429
         if (error.status === 429) return;
@@ -59,17 +49,17 @@ const useHotelSearch = () => {
     }
   );
 
+  const hasData = data && data.data && data.data.body;
+
+  const total = hasData ? data.data.body.searchResults.totalCount : 0;
+
+  useDebugValue({ lat, lon, pageNumber, total });
+
   return {
-    data:
-      !error && data && data.length
-        ? data.flatMap((x) =>
-            x && x.data ? x.data.body.searchResults.results : []
-          )
-        : [],
+    data: !error && hasData ? data.data.body.searchResults.results : [],
     isLoading: !error && !data && isValid,
-    isError: error,
-    setSize,
-    size,
+    error,
+    total,
   };
 };
 export default useHotelSearch;

@@ -15,6 +15,7 @@ export const defaultSearchOptions = {
   rooms: 1,
   adults: 2,
   children: 0,
+  pageNumber: 1
 };
 
 export const optionsState = atom({
@@ -41,15 +42,14 @@ export const searchOptionsState = selector({
 });
 
 const setZoomState = (set, newValue) =>
-  setStateValue(set, zoomState, newValue, {
-    zoom: 11,
-  });
+  setStateValue(set, zoomState, newValue, 11);
 
 const setOptionsState = (set, newValue) =>
   setStateValue(set, optionsState, newValue, {
     checkin: newValue.checkin,
     checkout: newValue.checkout,
     rooms: newValue.rooms,
+    pageNumber: newValue.pageNumber
   });
 
 const setLocationState = (set, newValue) =>
